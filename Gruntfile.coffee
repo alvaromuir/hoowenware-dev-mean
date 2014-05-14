@@ -1,11 +1,23 @@
 module.exports = (grunt) ->
+
+  # Load grunt tasks automatically
+  require("load-grunt-tasks") grunt
+
+  # Time how long tasks take. Can help when optimizing build times
+  require("time-grunt") grunt
+
   grunt.initConfig
+    # .env
+    env:
+      dev:
+        src: "./bin/.env"
+
     express:
       options: {}
       web:
         options:
           script: "./bin/www"
-          port: 3000
+          port: process.env.PORT
 
     # running `grunt coffee` will compile once
     coffee:
@@ -26,7 +38,7 @@ module.exports = (grunt) ->
           pretty: true
           client: false
         files:
-          "./": ['./views/{,*/}*.jade']
+          "./": ["./views/{,*/}*.jade"]
 
     # running `grunt less` will compile once
     less:
@@ -36,7 +48,18 @@ module.exports = (grunt) ->
           yuicompress: true
 
         files:
-          "./public/stylesheets/main.css": "./src/styles/{,*/}*.less"
+          "./public/stylesheets/style.css": "./src/stylesheets/{,*/}*.less"
+
+
+    clean: [
+      "./public/stylesheets/{,*/}*.css"
+      "./public/javascripts/{,*/}*.js"
+    ]
+
+    open:
+      dev:
+        path: "http://127.0.0.1:" + process.env.PORT
+        app: "Google Chrome"
 
     watch:
       frontend:
@@ -51,7 +74,7 @@ module.exports = (grunt) ->
         ]
 
       less:
-        files: "./src/styles/{,*/}*.less"
+        files: "./src/stylesheets/{,*/}*.less"
         tasks: ["less"]
 
       coffee:
@@ -65,7 +88,7 @@ module.exports = (grunt) ->
         ]
         tasks: ["express:web"]
         options:
-          nospawn: true #Without this option specified express won't be reloaded
+          nospawn: true #Without this option specified express won"t be reloaded
           atBegin: true
 
     parallel:
@@ -74,6 +97,10 @@ module.exports = (grunt) ->
           stream: true
 
         tasks: [
+          {
+            grunt: true
+            args: ["clean"]
+          }
           {
             grunt: true
             args: ["watch:frontend"]
@@ -90,18 +117,19 @@ module.exports = (grunt) ->
             grunt: true
             args: ["watch:web"]
           }
+          {
+            grunt: true
+            args: ["open:dev"]
+          }
+          {
+            grunt: true
+            args: ["open:dev"]
+          }
         ]
 
-
-  # Load grunt tasks automatically
-  require("load-grunt-tasks") grunt
-
-  # Time how long tasks take. Can help when optimizing build times
-  require("time-grunt") grunt
-
   grunt.registerTask "web", "launch webserver and watch tasks", [
+    "env:dev"
     "parallel:web"
-    "open:server"
     ]
 
   grunt.registerTask "default", ["web"]
