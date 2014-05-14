@@ -1,0 +1,36 @@
+{
+  "name": "hoowenware-dev-mean",
+  "version": "0.0.1",
+  "authors": [
+    "Alvaro Muir",
+    "@alvaromuir"
+  ],
+  "description": "Peer to peer group travel",
+  "main": "app.js",
+  "keywords": [
+    "group",
+    "travel",
+    "peer-to-peer",
+    "mean"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/alvaromuir/hoowenware-dev-mean",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "lodash": "~2.4.1",
+    "moment": "~2.6.0",
+    "requirejs": "~2.1.11"
+  },
+  "devDependencies": {
+    "request": "~2.34.1",
+    "chai": "~1.9.1"
+  }
+}
